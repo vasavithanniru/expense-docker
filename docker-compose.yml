@@ -10,13 +10,13 @@ services:
     volumes:
       - mysql:/var/lib/mysql # -v mysql:/var/lib/mysql  (this path is from docker documentation , mysql stores data in /var/lib/mysql)
   backend:
-    image: mysql
-    container_name: joindevops/backend:v1
+    image: joindevops/backend:v1
+    container_name: backend
     depends_on: 
      - mysql
   frontend: 
     image: joindevops/frontend:v1
-    container_name: backend
+    container_name: frontend
     depends_on: 
       - backend
     ports:
