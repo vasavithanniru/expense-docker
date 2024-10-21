@@ -1,0 +1,25 @@
+version : "3"
+networks : 
+  expense:
+volumes: 
+  mysql: # docker create volume mysql
+services: 
+  mysql:
+    image: joindevops/mysql:v1
+    container_name: mysql  # --name mysql
+    volumes:
+      - mysql:/var/lib/mysql # -v mysql:/var/lib/mysql  (this path is from docker documentation , mysql stores data in /var/lib/mysql)
+  backend:
+    image: mysql
+    container_name: joindevops/backend:v1
+    depends_on: 
+     - mysql
+  frontend: 
+    image: joindevops/frontend:v1
+    container_name: backend
+    depends_on: 
+      - backend
+    ports:
+      - 80:80      
+
+
