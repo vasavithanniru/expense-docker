@@ -1,24 +1,20 @@
 FROM node:20 AS builder
-RUN mkdir /opt/server
+WORKDIR /opt/server
 COPY package.json .
 COPY *.js .
-# Installing project dependencies
 RUN npm install
 
-FROM node:20.18.0-alpine3.20 
+
+FROM node:20.18.0-alpine3.20
 EXPOSE 8080
-# in host network we should use DB_HOST as localhost
-# in bridge network we should use DB_HOST as mysql
 ENV DB_HOST="mysql"
 RUN addgroup -S expense && adduser -S expense -G expense && \
-     mkdir /opt/server && \
-     chown -R expense:expense /opt/server
+    mkdir /opt/server && \
+    chown -R expense:expense /opt/server
 WORKDIR /opt/server
 COPY --from=builder /opt/server /opt/server
 USER expense
 CMD ["node", "index.js"]
-
-
 # Before best practices implemented
 # FROM node:20
 # EXPOSE 8080
@@ -29,4 +25,3 @@ CMD ["node", "index.js"]
 # COPY *.js .
 # RUN npm install
 # CMD ["node", "index.js"]
-
